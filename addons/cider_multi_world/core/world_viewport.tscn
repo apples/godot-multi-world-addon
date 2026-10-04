@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://mgnbxustq8xi"]
+
+[ext_resource type="Script" uid="uid://bhedue5he4a0j" path="res://addons/cider_multi_world/core/world_viewport.gd" id="1_wslqv"]
+[ext_resource type="Script" uid="uid://bymmmwbqofp7c" path="res://addons/cider_multi_world/core/world_authority_observer.gd" id="2_mh0og"]
+[ext_resource type="Script" uid="uid://ddiq0a2jema1" path="res://addons/cider_multi_world/core/world_visible_multiplayer_synchronizer.gd" id="3_mg7ry"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_q26wm"]
+
+[node name="WorldViewport" type="SubViewport" unique_id=968312668 node_paths=PackedStringArray("world_root")]
+own_world_3d = true
+script = ExtResource("1_wslqv")
+world_root = NodePath(".")
+metadata/_custom_type_script = "uid://bhedue5he4a0j"
+
+[node name="WorldAuthorityObserver" type="Node" parent="." unique_id=870917603]
+script = ExtResource("2_mh0og")
+metadata/_custom_type_script = "uid://bymmmwbqofp7c"
+
+[node name="WorldVisibleMultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1815215589]
+replication_config = SubResource("SceneReplicationConfig_q26wm")
+visibility_update_mode = 2
+public_visibility = false
+script = ExtResource("3_mg7ry")
+metadata/_custom_type_script = "uid://ddiq0a2jema1"
+
+[node name="PlayerActorMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=451131046]
+spawn_path = NodePath("..")
+
+[connection signal="despawned" from="PlayerActorMultiplayerSpawner" to="." method="_on_player_actor_multiplayer_spawner_despawned"]
+[connection signal="spawned" from="PlayerActorMultiplayerSpawner" to="." method="_on_player_actor_multiplayer_spawner_spawned"]

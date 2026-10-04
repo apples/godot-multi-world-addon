@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://k5aay4alukar"]
+
+[ext_resource type="Script" uid="uid://dut02fd4pcxcp" path="res://addons/cider_multi_world/core/world_instance.gd" id="1_ux52e"]
+[ext_resource type="Script" uid="uid://bymmmwbqofp7c" path="res://addons/cider_multi_world/core/world_authority_observer.gd" id="2_1qxft"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_83v68"]
+
+[node name="WorldInstance" type="Node" unique_id=910994622]
+script = ExtResource("1_ux52e")
+metadata/_custom_type_script = "uid://dut02fd4pcxcp"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=885875724]
+replication_config = SubResource("SceneReplicationConfig_83v68")
+
+[node name="WorldViewportMultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1646519115]
+unique_name_in_owner = true
+spawn_path = NodePath("..")
+spawn_limit = 1
+
+[node name="WorldAuthorityObserver" type="Node" parent="WorldViewportMultiplayerSpawner" unique_id=131492750]
+script = ExtResource("2_1qxft")
+metadata/_custom_type_script = "uid://bymmmwbqofp7c"
+
+[connection signal="authority_changed" from="WorldViewportMultiplayerSpawner" to="." method="_on_world_viewport_multiplayer_spawner_authority_changed"]
+[connection signal="despawned" from="WorldViewportMultiplayerSpawner" to="." method="_on_world_viewport_multiplayer_spawner_despawned"]
+[connection signal="spawned" from="WorldViewportMultiplayerSpawner" to="." method="_on_world_viewport_multiplayer_spawner_spawned"]
